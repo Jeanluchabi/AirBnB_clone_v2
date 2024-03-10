@@ -3,15 +3,15 @@
 
 # Installs Nginx if not installed
 if ! command -v nginx &> /dev/null; then
-    apt-get update
-    apt-get -y install nginx
+    sudo apt update
+    sudo apt -y install nginx
 fi
 
 # Creates necessary directories
-mkdir -p /data/web_static/releases/test /data/web_static/shared
+sudo mkdir -p /data/web_static/{releases/test,shared}
 
 # Creates a fake HTML file
-echo "<html>
+sudo echo "<html>
   <head>
   </head>
   <body>
@@ -19,20 +19,21 @@ echo "<html>
   </body>
 </html>" > /data/web_static/releases/test/index.html
 
-# Creates or recreate symbolic link
+# Creates or recreates symbolic link
 if [ -L /data/web_static/current ]; then
-    rm /data/web_static/current
+    sudo rm /data/web_static/current
 fi
-ln -s /data/web_static/releases/test /data/web_static/current
+sudo ln -s /data/web_static/releases/test /data/web_static/current
 
 # Gives ownership to ubuntu user and group
-chown -hR ubuntu:ubuntu /data/
+sudo chown -hR luc:luc /data/
 
 # Updates Nginx configuration
 config="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n"
-sed -i "/server_name _;/a $config" /etc/nginx/sites-available/default
+sudo sed -i "/server_name _;/a $config" /etc/nginx/sites-available/default
 
 # Restarts Nginx
-service nginx restart
+sudo service nginx restart
 
 exit 0
+

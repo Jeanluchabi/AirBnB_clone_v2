@@ -5,9 +5,9 @@ an archive to your web servers, using the function do_deploy
 from fabric.api import put, run, env
 from os.path import exists
 
-env.hosts = ['100.26.230.60', '52.91.183.162']
-env.user = 'ubuntu'
-env.key_filename = '/root/alx-system_engineering-devops/ssh-key'
+env.hosts = ['54.162.94.191', '35.168.7.44']
+env.user = 'luc'
+env.key_filename = '/root/Documents/ssh_p_key'
 
 
 def do_deploy(archive_path):
@@ -41,3 +41,4 @@ def do_deploy(archive_path):
         """Print an error message and return False"""
         print("Error during deployment: {}".format(e))
         return False
+

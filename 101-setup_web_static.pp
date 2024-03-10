@@ -14,7 +14,7 @@ $nginx_conf = "server {
     }
 
     location /redirect_me {
-        return 301 http://linktr.ee/get_gaulle/;
+        return 301 http://lucweb/new-page;
     }
 
     error_page 404 /404.html;
@@ -64,7 +64,7 @@ file { '/data/web_static/current':
 }
 
 # Ensure correct ownership of the /data/ directory
-exec { 'chown -R ubuntu:ubuntu /data/':
+exec { 'chown -R luc /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 
@@ -92,11 +92,12 @@ file { '/var/www/html/404.html':
 file { '/etc/nginx/sites-available/default':
   ensure  => 'file',
   content => $nginx_conf,
-  notify  => Exec['nginx_restart'],
+  notify  => Service['nginx'],
 }
 
-# Restart Nginx when the configuration is updated
-exec { 'nginx_restart':
-  command => '/etc/init.d/nginx restart',
-  refreshonly => true,
+# Ensure Nginx service is running
+service { 'nginx':
+  ensure  => 'running',
+  enable  => true,
 }
+
